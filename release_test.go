@@ -9,7 +9,7 @@ import (
 )
 
 func TestCheckConnection(t *testing.T) {
-	instance := checkConnection()
+	instance := checkConnection("https://github.com/Matt-Gleich/nuke")
 	assert.True(t, instance)
 }
 

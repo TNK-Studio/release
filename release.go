@@ -12,11 +12,11 @@ import (
 // Returns true or false if there is an update or not as well as the version
 // value. Will return false if there is no network connection.
 func Check(localVersion string, repoURL string) (bool, string, error) {
-	hasConnection := checkConnection()
+	requestURL := convertURL(repoURL)
+	hasConnection := checkConnection(requestURL)
 	if !hasConnection {
 		return false, "", nil
 	}
-	requestURL := convertURL(repoURL)
 	currentVersion, err := getVersion(requestURL)
 	if err != nil {
 		return false, "", err
@@ -28,9 +28,9 @@ func Check(localVersion string, repoURL string) (bool, string, error) {
 }
 
 // Check for a network connection
-func checkConnection() bool {
-	resp, err := http.Get("http://clients3.google.com/generate_204")
-	if err != nil || resp.StatusCode != 204 {
+func checkConnection(uri string) bool {
+	resp, err := http.Get(uri)
+	if err != nil || resp.StatusCode != 200 {
 		return false
 	}
 	return true
